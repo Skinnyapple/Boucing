@@ -1,30 +1,45 @@
-float x, y;
-float dx, dy;     
-float size = 40; 
+BouncingTriangle tri;  
 
 void setup() {
   size(600, 400);
-  x = width/2;
-  y = height/2;
-  dx = 3;
-  dy = 2;
+  tri = new BouncingTriangle(width/2, height/2, 40);
 }
 
 void draw() {
-  background(0,0,0);
+  background(0);
   
-  fill(255, 255, 255);
-  noStroke();
-  triangle(x, y - size, x - size, y + size, x + size, y + size);
+  tri.update();
+  tri.drawTriangle();
+}
+
+class BouncingTriangle {
+  float x, y, dx, dy;
+  float s;      
   
-  x=x+dx;
-  y=y+dy;
-  
-  if (x - size < 0 || x + size > width) {
-    dx=dx*-1;
+  BouncingTriangle(float startX, float startY, float size_) {
+    x = startX;
+    y = startY;
+    s = size_;
+    dx = 3;
+    dy = 2;
   }
   
-  if (y - size < 0 || y + size > height) {
-    dy=dy*-1;
+  void update() {
+    x += dx;
+    y += dy;
+    
+    if (x - s < 0 || x + s > width) {
+      dx *= -1;
+    }
+    if (y - s < 0 || y + s > height) {
+      dy *= -1;
+    }
+  }
+  
+  void drawTriangle() {
+    fill(255,255,255);
+    noStroke();
+    triangle(x, y - s, x - s, y + s, x + s, y + s);
   }
 }
+
