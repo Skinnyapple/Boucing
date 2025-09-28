@@ -6,10 +6,14 @@ void setup() {
 }
 
 void draw() {
-  background(0);
+  background(0,0,0);
   
   tri.update();
   tri.drawTriangle();
+}
+
+void mousePressed() {
+  tri = new BouncingTriangle(mouseX, mouseY, 40);
 }
 
 class BouncingTriangle {
@@ -20,8 +24,12 @@ class BouncingTriangle {
     x = startX;
     y = startY;
     s = size_;
-    dx = 3;
-    dy = 2;
+    dx = random(-3, 3);
+    dy = random(-3, 3);
+    if (dx == 0 && dy == 0) { 
+      dx = 2; 
+      dy = 1; 
+    }
   }
   
   void update() {
@@ -41,5 +49,8 @@ class BouncingTriangle {
     noStroke();
     triangle(x, y - s, x - s, y + s, x + s, y + s);
   }
+} s, x - s, y + s, x + s, y + s);
+  }
 }
+
 
