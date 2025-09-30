@@ -1,25 +1,30 @@
-BouncingTriangle tri;  
+BouncingTriangle[] tri = new BouncingTriangle[3];  
 
 void setup() {
   size(600, 400);
-  tri = new BouncingTriangle(width/2, height/2, 40);
+  for (int i = 0; i < tri.length; i++) {
+    tri[i] = new BouncingTriangle(random(width), random(height), 40);
+  }
 }
 
 void draw() {
-  background(0,0,0);
-  
-  tri.update();
-  tri.drawTriangle();
+  background(0, 0, 0);
+
+  for (int i = 0; i < tri.length; i++) {
+    tri[i].update();
+    tri[i].drawTriangle();
+  }
 }
 
 void mousePressed() {
-  tri = new BouncingTriangle(mouseX, mouseY, 40);
+  int idx = int(random(tri.length));
+  tri[idx] = new BouncingTriangle(mouseX, mouseY, 40);
 }
 
 class BouncingTriangle {
   float x, y, dx, dy;
   float s;      
-  
+
   BouncingTriangle(float startX, float startY, float size_) {
     x = startX;
     y = startY;
@@ -31,11 +36,11 @@ class BouncingTriangle {
       dy = 1; 
     }
   }
-  
+
   void update() {
     x += dx;
     y += dy;
-    
+
     if (x - s < 0 || x + s > width) {
       dx *= -1;
     }
@@ -43,14 +48,11 @@ class BouncingTriangle {
       dy *= -1;
     }
   }
-  
+
   void drawTriangle() {
     fill(255,255,255);
     noStroke();
     triangle(x, y - s, x - s, y + s, x + s, y + s);
   }
-} s, x - s, y + s, x + s, y + s);
-  }
 }
-
 
