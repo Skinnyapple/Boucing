@@ -1,4 +1,4 @@
-BouncingTriangle[] tri = new BouncingTriangle[3];  
+BouncingTriangle[] tri = new BouncingTriangle[3];
 
 void setup() {
   size(600, 400);
@@ -8,10 +8,19 @@ void setup() {
 }
 
 void draw() {
-  background(0, 0, 0);
+  background(0,0,0);
 
   for (int i = 0; i < tri.length; i++) {
     tri[i].update();
+  }
+
+  for (int i = 0; i < tri.length; i++) {
+    for (int j = i + 1; j < tri.length; j++) {
+      tri[i].Collision(tri[j]);
+    }
+  }
+
+  for (int i = 0; i < tri.length; i++) {
     tri[i].drawTriangle();
   }
 }
@@ -23,17 +32,19 @@ void mousePressed() {
 
 class BouncingTriangle {
   float x, y, dx, dy;
-  float s;      
+  float s; 
+  float radius;
 
   BouncingTriangle(float startX, float startY, float size_) {
     x = startX;
     y = startY;
     s = size_;
+    radius = s; 
     dx = random(-3, 3);
     dy = random(-3, 3);
-    if (dx == 0 && dy == 0) { 
-      dx = 2; 
-      dy = 1; 
+    if (dx == 0 && dy == 0) {
+      dx = 2;
+      dy = 1;
     }
   }
 
@@ -41,11 +52,23 @@ class BouncingTriangle {
     x += dx;
     y += dy;
 
-    if (x - s < 0 || x + s > width) {
+    if (x - radius < 0 || x + radius > width) {
       dx *= -1;
     }
-    if (y - s < 0 || y + s > height) {
+    if (y - radius < 0 || y + radius > height) {
       dy *= -1;
+    }
+  }
+
+  void Collision(BouncingTriangle other) {
+    float distance = dist(x, y, other.x, other.y);
+    if (distance < radius + other.radius) {
+      float tempDx = dx;
+      float tempDy = dy;
+      dx = other.dx;
+      dy = other.dy;
+      other.dx = tempDx;
+      other.dy = tempDy;
     }
   }
 
@@ -55,4 +78,3 @@ class BouncingTriangle {
     triangle(x, y - s, x - s, y + s, x + s, y + s);
   }
 }
-
